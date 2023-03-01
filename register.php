@@ -7,10 +7,10 @@
         <h2>Registration</h2>
       </div>
       <form role="form">
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="emp_code">Code Emp <span class="text-danger">*</span></label>
           <input type="text" class="form-control" placeholder="Code Emp" aria-label="Code Emp" aria-describedby="emp_code-addon" id="emp_code" name="emp_code" value="<?php echo $emp_code; ?>" required>
-        </div>
+        </div> -->
         <div class="mb-3">
           <label for="emp_name">Name<span class="text-danger">*</span></label>
           <input type="text" class="form-control" placeholder="Name Emp" aria-label="Name Emp" aria-describedby="emp_name-addon" id="emp_name" name="emp_name" value="<?php echo $emp_name; ?>" required>
@@ -78,7 +78,7 @@
           console.log(data);
           // console.log(data.result.brand_agency);
           if (data.status == 'ok') {
-            $('#emp_code').val(data.result.emp_code);
+            // $('#emp_code').val(data.result.emp_code);
             $('#emp_name').val(data.result.emp_name);
             $('#emp_surname').val(data.result.emp_surname);
             $('#emp_nickname').val(data.result.emp_nickname);
@@ -96,7 +96,7 @@
 
         $.post("save-member.php", {
           userid: user_id,
-          emp_code: $('#emp_code').val(),
+          // emp_code: $('#emp_code').val(),
           emp_name: $('#emp_name').val(),
           emp_surname: $('#emp_surname').val(),
           emp_nickname: $('#emp_nickname').val(),

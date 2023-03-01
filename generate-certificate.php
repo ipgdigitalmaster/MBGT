@@ -30,7 +30,7 @@ try {
     header("Content-Type: image/png");
     header("Cache-Control: no-cache");
     header("Accept-Ranges: none");
-    header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode("Certification-" . str_replace(' ', '-', $r_course['content_name']) . "-For-" . $r_member['emp_name'] . ".png"));
+    header("Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode("Certification-" . str_replace(' ', '-', $r_course['content_name']) . "-For-" . str_replace(' ', '-', $r_member['emp_name']) . ".png"));
 
     echo $image;
     // create an output stream for the conversion result

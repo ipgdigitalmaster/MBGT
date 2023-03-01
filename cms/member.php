@@ -66,7 +66,7 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
 
                                             <th scope="col">#</th>
                                             <th scope="col">UserID</th>
-                                            <th scope="col">Code</th>
+                                            <!-- <th scope="col">Code</th> -->
                                             <th scope="col">Batch</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Display Name</th>
@@ -87,7 +87,7 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
                                                     <tr>
                                                         <td class="text-center"><?php echo $r['member_id']; ?></td>
                                                         <td><?php echo $r['userid']; ?></td>
-                                                        <td><?php echo $r['emp_code']; ?></td>
+                                                        <!-- <td><?php echo $r['emp_code']; ?></td> -->
                                                         <td class="text-center"><?php
                                                                                 $sql_batch = "select * from mbgt_batch where batch_id = " . $item;
                                                                                 $q_batch = $mysqli->query($sql_batch);

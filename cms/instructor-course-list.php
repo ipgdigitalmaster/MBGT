@@ -38,8 +38,7 @@ $tbl_name = $FTblName . "_course";
                   <tbody>
 
                     <?php
-                    $s = "SELECT * FROM mbgt_course  where course_instructor =" . $_GET['instructor_id'] . " order by $PK_field asc ";
-                    #echo $s;
+                    $s = "SELECT * FROM mbgt_course where course_instructor LIKE '%" . '"' . $_GET['instructor_id'] . '"' . "%' order by $PK_field asc ";
                     $q = $mysqli->query($s);
                     while ($r = $q->fetch_assoc()) {
                     ?>
@@ -53,7 +52,9 @@ $tbl_name = $FTblName . "_course";
                           <?php echo $r['content_name'] ?>
                         </td>
                       </tr>
-                    <?php } ?>
+                    <?php
+                    }
+                    ?>
 
                   </tbody>
                 </table>

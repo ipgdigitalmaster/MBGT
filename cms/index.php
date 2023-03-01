@@ -26,6 +26,7 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
 }
 $lineData['token'] = $token;
 $usage = getLINEQuota($lineData);
+
 $message = json_decode($usage['message']);
 
 ?>

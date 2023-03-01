@@ -15,6 +15,9 @@ if (isset($_POST['mode'])) {
     if ($_POST['mode'] == "update") {
         include("../include/m_update.php");
     }
+    $sql_insert_admin = "insert into `" . $FTblName . "_administrator` (`permission_group_id`, `admin_username`, `admin_password`, `admin_firstname`, `admin_email`, `admin_type`, `admin_status`, `create_date`, `create_by`) 
+    values ( '0', '" . $_POST['instructor_email'] . "','" .  md5($_POST['instructor_name'] . '12345') . "','" . $_POST['instructor_name'] . "','" . $_POST['instructor_email'] . "','Instructor','1', Now(),'" . $_SESSION["login_name"] . "' ) ";
+    $mysqli->query($sql_insert_admin);
     #echo $sql;
 ?>
     <script>
@@ -78,16 +81,16 @@ if (isset($_POST['mode'])) {
                     <label for="Name">Instructor Company</label>
                     <!-- <input type="text" class="form-control" placeholder="Instructor Company" aria-label="Instructor Company" aria-describedby="email-addon" id="instructor_company" name="instructor_company" value="<?php echo $instructor_company; ?>"> -->
                     <select name="instructor_company" id="instructor_company" class="form-select" aria-label="Default select example">
-                        <option <?=$instructor_company==''? 'selected':'' ?> value="">N/A</option>
-                        <option <?=$instructor_company=='Mediabrands'? 'selected':'' ?> value="Mediabrands">Mediabrands</option>
-                        <option <?=$instructor_company=='Initiative'? 'selected':'' ?> value="Initiative">Initiative</option>
-                        <option <?=$instructor_company=='UM'? 'selected':'' ?> value="UM">UM</option>
-                        <option <?=$instructor_company=='MBCS'? 'selected':'' ?> value="MBCS">MBCS</option>
-                        <option <?=$instructor_company=='BPN'? 'selected':'' ?> value="BPN">BPN</option>
-                        <option <?=$instructor_company=='MANGNA'? 'selected':'' ?> value="MANGNA">MANGNA</option>
-                        <option <?=$instructor_company=='THRIVE'? 'selected':'' ?> value="THRIVE">THRIVE</option>
-                        <option <?=$instructor_company=='matterkind'? 'selected':'' ?> value="matterkind">matterkind</option>
-                        <option <?=$instructor_company=='REPISE'? 'selected':'' ?> value="REPISE">REPISE</option>
+                        <option <?= $instructor_company == '' ? 'selected' : '' ?> value="">N/A</option>
+                        <option <?= $instructor_company == 'Mediabrands' ? 'selected' : '' ?> value="Mediabrands">Mediabrands</option>
+                        <option <?= $instructor_company == 'Initiative' ? 'selected' : '' ?> value="Initiative">Initiative</option>
+                        <option <?= $instructor_company == 'UM' ? 'selected' : '' ?> value="UM">UM</option>
+                        <option <?= $instructor_company == 'MBCS' ? 'selected' : '' ?> value="MBCS">MBCS</option>
+                        <option <?= $instructor_company == 'BPN' ? 'selected' : '' ?> value="BPN">BPN</option>
+                        <option <?= $instructor_company == 'MANGNA' ? 'selected' : '' ?> value="MANGNA">MANGNA</option>
+                        <option <?= $instructor_company == 'THRIVE' ? 'selected' : '' ?> value="THRIVE">THRIVE</option>
+                        <option <?= $instructor_company == 'matterkind' ? 'selected' : '' ?> value="matterkind">matterkind</option>
+                        <option <?= $instructor_company == 'REPISE' ? 'selected' : '' ?> value="REPISE">REPISE</option>
                     </select>
                 </div>
                 <div class="mb-3">

@@ -5,7 +5,7 @@ $page = "course";
 $PK_field = "content_id";
 $PK_status = "content_status";
 $tbl_name = $FTblName . "_course";
-$fieldlist = array('content_name', 'content_coach', 'course_instructor', 'content_detail', 'content_code', 'content_status', 'assign_member', 'course_batch', 'course_type', 'course_location', 'course_join_link', 'course_quiz_form', 'course_start_date', 'course_end_date');
+$fieldlist = array('content_name', 'content_coach', 'course_instructor', 'content_detail', 'content_code', 'content_status', 'assign_member', 'course_batch', 'course_type', 'course_location', 'course_join_link', 'course_video_link', 'course_quiz_form', 'course_start_date', 'course_end_date');
 $pagesize = 25;
 if (isset($_POST['mode'])) {
 
@@ -13,8 +13,8 @@ if (isset($_POST['mode'])) {
         include "../include/m_add.php";
     }
     if ($_POST['mode'] == "update") {
-
         $_POST['assign_member'] = json_encode($_POST['assign_member']);
+        $_POST['course_instructor'] = json_encode($_POST['course_instructor']);
 
         $sql = "select * from $tbl_name where $PK_field = '" . trim($_POST[$PK_field]) . "'";
         $q = $mysqli->query($sql);
@@ -74,6 +74,8 @@ if (isset($_POST['mode'])) {
 
         $mysqli->query("update " . $tbl_name . " set course_material = '" . json_encode($path_material) . "' where " . $PK_field . " = " . $id);
     }
+
+
 ?>
     <script>
         window.location.href = '<?php echo $page . ".php"; ?>';
@@ -123,6 +125,7 @@ if (isset($_POST['mode'])) {
                             <input name="<?php echo $PK_field; ?>" type="hidden" id="<?php echo $PK_field; ?>" value="<?php echo $$PK_field; ?>">
                         <?php } ?>
                         <input type="hidden" id="mode" name="mode" value="<?php echo $_GET['mode']; ?>">
+                        <input type="hidden" id="instructor_course_id" name="instructor_course_id" value="<?php echo $instructor_course_id; ?>">
 
                         <div class="col-6 mb-3">
                             <label for="content_picture">Picture</label>
@@ -137,20 +140,61 @@ if (isset($_POST['mode'])) {
                             <label for="Name">Coach Name</label>
                             <input type="text" disabled class="form-control" placeholder="Coach Name" aria-label="Coach Name" aria-describedby="email-addon" id="content_coach" name="content_coach" value="<?php echo $content_coach; ?>">
                         </div>
-                        <div class="col-6 mb-3">
+                        <!-- <div class="col-6 mb-3">
                             <label for="course_instructor">Course Instructor</label>
                             <?php
-                            $sql_instructor = "select * from mbgt_instructor order by instructor_id desc";
-                            $q_instructor = $mysqli->query($sql_instructor);
+                            //$sql_instructor = "select * from mbgt_instructor order by instructor_id desc";
+                            //$q_instructor = $mysqli->query($sql_instructor);
                             ?>
                             <select name="course_instructor" id="course_instructor" class="form-control">
                                 <option value="">Select Instructor For This Course </option>
                                 <?php
-                                while ($rec_instructor = $q_instructor->fetch_assoc()) { ?>
-                                    <option value="<?php echo $rec_instructor['instructor_id'] ?>" <?php if ($rec_instructor['instructor_id'] == $course_instructor) {
-                                                                                                        echo 'selected';
-                                                                                                    } ?>><?php echo $rec_instructor['instructor_name'] ?></option>
-                                <?php } ?>
+                                //while ($rec_instructor = $q_instructor->fetch_assoc()) { 
+                                ?>
+                                    <option value="<?php //echo $rec_instructor['instructor_id'] 
+                                                    ?>" <?php //if ($rec_instructor['instructor_id'] == $course_instructor) {
+                                                        //echo 'selected';
+                                                        //} 
+                                                        ?>><?php //echo $rec_instructor['instructor_name'] 
+                                                            ?></option>
+                                <?php //} 
+                                ?>
+                            </select>
+                        </div> -->
+                        <div class="col-6">
+                            <label for="course_instructor">Course Instructor</label>
+                            <select id="choices-multiple-remove-button" name="course_instructor[]" id="course_instructor" placeholder="Select instructor name" multiple>
+                                <?php
+                                $sql_instructor = "select * from mbgt_instructor order by instructor_id desc";
+                                $q_instructor = $mysqli->query($sql_instructor);
+                                if (isset($_GET['mode']) && $_GET['mode'] !== "add") {
+                                    $sql_course_instructor = "select course_instructor from mbgt_course where content_id = " . $_GET['content_id'];
+                                    $q_course_instructor = $mysqli->query($sql_course_instructor);
+                                    $rec_course_instructor = $q_course_instructor->fetch_assoc();
+                                }
+                                while ($rec_instructor = $q_instructor->fetch_assoc()) {
+                                    if ($rec_course_instructor['course_instructor'] !== 'null') {
+                                ?>
+
+                                        <option value="<?php echo $rec_instructor['instructor_id'] ?>" <?php
+                                                                                                        if (isset($_GET['mode']) && $_GET['mode'] !== "add") {
+                                                                                                            if ($rec_course_instructor['course_instructor']) {
+                                                                                                                if ($rec_instructor['instructor_id'] !== null && in_array($rec_instructor['instructor_id'], json_decode($rec_course_instructor['course_instructor']))) {
+                                                                                                                    echo "selected";
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                        ?>><?php echo $rec_instructor['instructor_name'];
+                                                                                                            ?></option>
+                                    <?php
+                                    } else {
+                                    ?>
+                                        <option value="<?php echo $rec_instructor['instructor_id'] ?>"><?php echo $rec_instructor['instructor_name'];
+                                                                                                        ?></option>
+                                <?php
+                                    }
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-6 mb-3">
@@ -175,7 +219,7 @@ if (isset($_POST['mode'])) {
                                     <div><a href="<?php echo $item ?>">[Download Course Material File # <?php echo $key + 1 ?>] </a></div>
                             <?php  }
                             } ?>
-                            <input type="file" accept=".pdf, .ppt, .pptx" class="form-control" id="course_material" name="course_material[]" multiple placeholder="file type should be pdf, ppt" value="<?php echo $course_material; ?>">
+                            <input type="file" accept=".pdf, .ppt, .pptx, .xlxs, .xls, .jpg, .jpeg, .png" class="form-control" id="course_material" name="course_material[]" multiple placeholder="file type should be pdf, ppt" value="<?php echo $course_material; ?>">
                         </div>
 
                         <!-- <div class="mb-3 bg-info"> -->
@@ -192,6 +236,10 @@ if (isset($_POST['mode'])) {
                         <div class="col-6 mb-3">
                             <label for="course_quiz_form">Course Quiz Form</label>
                             <input type="text" class="form-control" placeholder="Course Quiz Form" aria-label="Course Quiz Form" aria-describedby="email-addon" id="course_quiz_form" name="course_quiz_form" value="<?php echo $course_quiz_form; ?>">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="course_quiz_form">Course Video Record Link</label>
+                            <input type="text" class="form-control" placeholder="Course Video Record Link" aria-label="Course Video Record Link" aria-describedby="email-addon" id="course_video_link" name="course_video_link" value="<?php echo $course_video_link; ?>">
                         </div>
                         <div class="col-3 mt-3">
                             <label for="course_type">Course Type</label></br>

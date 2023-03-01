@@ -324,7 +324,7 @@
 
                         <div class="d-flex justify-content-between mb-2">
                             <p class="fw-bolder">Completed class</p>
-                            <div class="col-4">
+                            <!-- <div class="col-4">
                                 <select class="form-select form-select-sm" name="course_batch" id="course_batch">
                                     <option value="0" disabled> Choose Batch</option>
                                     <?php
@@ -337,7 +337,7 @@
 
                                     ?>
                                 </select>
-                            </div>
+                            </div> -->
 
                         </div>
                         <ul class="list-group">
@@ -414,7 +414,6 @@
                 },
                 success: function(data) {
                     if (data.status == 'ok') {
-                        $('#emp_code').html(data.result.emp_code);
                         $('#emp_displayname').html(data.result.displayname);
                         $('#emp_name').html(data.result.emp_name);
                         $('#emp_surname').html(data.result.emp_surname);

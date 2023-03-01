@@ -53,13 +53,13 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
 
                 <div class="batch-filter col-3 card-header mr-3">
                   <select id="batchFilter" class="form-control mb-4" style="padding: 0.5rem 2rem;">
-                    <option value="" >All Batch</option>
+                    <option value="">All Batch</option>
                     <?php
 
                     $sql_batch = "select * from mbgt_batch where batch_status = 1 order by batch_id DESC";
                     $q_batch = $mysqli->query($sql_batch);
                     while ($r_batch = $q_batch->fetch_assoc()) {
-                      echo '<option value="' . $r_batch['batch_id'] . '">' . $r_batch['batch_name'] . '</option>';
+                      echo '<option value="' . $r_batch['batch_name'] . '">' . $r_batch['batch_name'] . '</option>';
                     }
 
                     ?>
@@ -92,7 +92,7 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
                       <tr>
 
                         <td class="text-center">
-                          <span><?= $r['content_id']?></span>
+                          <span><?= $r['content_id'] ?></span>
                         </td>
                         <td>
                           <div class="d-flex px-2 py-1">
@@ -114,12 +114,12 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
                           ?>
                         </td>
                         <td class="text-center text-center text-sm">
-                          <span class="badge badge-sm <?= $r[$PK_status]== 1?'bg-gradient-success':'bg-gradient-secondary'?>">
+                          <span class="badge badge-sm <?= $r[$PK_status] == 1 ? 'bg-gradient-success' : 'bg-gradient-secondary' ?>">
                             <?php if (strlen($r[$PK_status]) > 0) {
-                                echo "ACTIVE";
-                              } else {
-                                echo "NOT ACTIVE";
-                              } ?>
+                              echo "ACTIVE";
+                            } else {
+                              echo "NOT ACTIVE";
+                            } ?>
                           </span>
                         </td>
                         <td class="text-center">
@@ -144,8 +144,8 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
                         </td>
                         <td class="text-center">
                           <a href="<?php echo $page; ?>-update.php?<?php echo $PK_field; ?>=<?php echo $r[$PK_field]; ?>&mode=update" class="text-info font-weight-bold text-xs mr-4" data-toggle="tooltip" data-original-title="Edit Course">
-                          <i class="fas fa-pencil-alt text-info me-2 " aria-hidden="true"></i> Edit </a>&nbsp;&nbsp;&nbsp;
-                        <!-- </td>
+                            <i class="fas fa-pencil-alt text-info me-2 " aria-hidden="true"></i> Edit </a>&nbsp;&nbsp;&nbsp;
+                          <!-- </td>
                         <td class="align-middle"> -->
                           <?php //if ($r[$PK_field]!='1'){ 
                           ?>
@@ -178,7 +178,9 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
 
       $("#course-list").dataTable({
         "dom": 'Bfrtip',
-        "order": [[0, 'desc']],
+        "order": [
+          [0, 'desc']
+        ],
         "searching": true,
       });
       $('#course-list_filter > label').hide();
@@ -196,7 +198,7 @@ if (isset($_GET['del']) && $_GET['del'] == "true") {
         }
       });
 
-    
+
       $.fn.dataTable.ext.search.push(
         function(settings, data, dataIndex) {
           var selectedItem = $('#batchFilter').val()

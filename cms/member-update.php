@@ -5,7 +5,7 @@ $page = "member";
 $PK_field = "member_id";
 $PK_status = "member_status";
 $tbl_name = $FTblName . "_member";
-$fieldlist = array('member_batch', 'emp_code', 'emp_name', 'emp_surname', 'emp_nickname', 'member_email', 'member_position', 'brand_agency', 'status');
+$fieldlist = array('member_batch', 'emp_name', 'emp_surname', 'emp_nickname', 'member_email', 'member_position', 'brand_agency', 'status');
 $pagesize = 25;
 if (isset($_POST['mode'])) {
     #echo "mode";
@@ -62,10 +62,10 @@ if (isset($_POST['mode'])) {
                         <?php } ?>
                         <input type="hidden" id="mode" name="mode" value="<?php echo $_GET['mode']; ?>">
 
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="Name">EMP Code</label>
                             <input type="text" class="form-control" placeholder="EMP Code" aria-label="EMP Code" aria-describedby="email-addon" id="emp_code" name="emp_code" value="<?php echo $emp_code; ?>">
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                             <label for="Name">EMP Name</label>
                             <input type="text" class="form-control" placeholder="EMP Name" aria-label="EMP Name" aria-describedby="email-addon" id="emp_name" name="emp_name" value="<?php echo $emp_name; ?>">

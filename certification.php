@@ -25,9 +25,7 @@ $r_course = $q_course->fetch_assoc();
         <div id="Background"><img src="./cms/assets/img/certificate/Background.png"></div>
         <div id="VectorSmartObject"><img src="./cms/assets/img/certificate/VectorSmartObject.png"></div>
         <div id="VectorSmartObject_0"><img src="./cms/assets/img/certificate/VectorSmartObject_0.png"></div>
-        <div id="VectorSmartObject_1">
-            <div class="course_name"><?php echo $r_course['content_name'] ?></div>
-        </div>
+        <!-- <div id="VectorSmartObject_1"> </div> -->
         <div id="CERTIFICATE"><img src="./cms/assets/img/certificate/CERTIFICATE.png"></div>
         <div id="OFACHIEVEMENT"><img src="./cms/assets/img/certificate/OFACHIEVEMENT.png"></div>
         <div id="ThiswillCertifythat"><img src="./cms/assets/img/certificate/ThiswillCertifythat.png"></div>
@@ -36,7 +34,10 @@ $r_course = $q_course->fetch_assoc();
         </div>
         <div id="VectorSmartObject_2"><img src="./cms/assets/img/certificate/VectorSmartObject_2.png"></div>
         <div id="VectorSmartObject_3"><img src="./cms/assets/img/certificate/VectorSmartObject_3.png"></div>
-        <div id="SUCCESSFULLYCOMPLETE"><img src="./cms/assets/img/certificate/SUCCESSFULLYCOMPLETE.png"></div>
+        <div id="SUCCESSFULLYCOMPLETE">
+            <img src="./cms/assets/img/certificate/SUCCESSFULLYCOMPLETE.png">
+            <div class="course_name"><?php echo $r_course['content_name'] ?></div>
+        </div>
     </div>
 </body>
 

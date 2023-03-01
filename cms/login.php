@@ -1,40 +1,51 @@
 <?php
-    include("../include/config.php");
-    $warn = false;
-	if (isset($_POST['userid']) && isset($_POST['password'])){
-		$s="SELECT * FROM `".$FTblName."_administrator` where admin_username = '".$mysqli->real_escape_string($_POST['userid'])."' and  admin_password = '".md5($mysqli->real_escape_string($_POST['password']))."' and admin_status = '1' ";
-		#echo $s;
-		if ($result = $mysqli->query($s)) {
-			if ($r = $result->fetch_assoc()){
-				#echo "true";
-				$warn = false;
-				$_SESSION["login_id"] = $r["admin_id"];//"1"; //
-				$_SESSION["login_name"] = $r["admin_firstname"];//"ADMIN"; //
-				$_SESSION["login_group"] = $r["admin_type"];
-                echo $_SESSION["login_id"];
-                echo $_SESSION["login_name"];
-                echo $_SESSION["login_group"];
-				?>
-				<script>
-				window.location.href='<?php echo "index.php"; ?>';
-				</script>
-				<?php
-			}else{
-				$warn = true;
-				#echo "false";
-			}
-		}
-	}
+include("../include/config.php");
+$warn = false;
+if (isset($_POST['userid']) && isset($_POST['password'])) {
+  $s = "SELECT * FROM `" . $FTblName . "_administrator` where admin_username = '" . $mysqli->real_escape_string($_POST['userid']) . "' and  admin_password = '" . md5($mysqli->real_escape_string($_POST['password'])) . "' and admin_status = '1' ";
+
+  if ($result = $mysqli->query($s)) {
+    if ($r = $result->fetch_assoc()) {
+      #echo "true";
+      $warn = false;
+      $_SESSION["login_id"] = $r["admin_id"]; //"1"; //
+      $_SESSION["login_name"] = $r["admin_firstname"]; //"ADMIN"; //
+      $_SESSION["login_group"] = $r["admin_type"];
+      // echo $_SESSION["login_id"];
+      // echo $_SESSION["login_name"];
+      // echo $_SESSION["login_group"];
+
+      if ($r['admin_type'] !== 'Instructor') {
+?>
+        <script>
+          window.location.href = '<?php echo "index.php"; ?>';
+        </script>
+      <?php   } else {
+        $s_instructor = "select * from mbgt_instructor where instructor_status = '1' and instructor_email = '" . $r['admin_email'] . "'";
+        $result_instructor = $mysqli->query($s_instructor);
+        $instructor = $result_instructor->fetch_assoc();
+
+        header("Location: https://www.ensemblethailand.com/mbgt/instructor-profile.php?instructor_id=" . $instructor['instructor_id']);
+        die();
+      } ?>
+<?php
+    } else {
+      $warn = true;
+      #echo "false";
+    }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <title>
-    <?php echo $s_title;?>
+    <?php echo $s_title; ?>
   </title>
   <!--     Fonts and icons     -->
   <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" /> -->
@@ -68,23 +79,23 @@
                   <form role="form" action="login.php" method="post">
                     <label>User</label>
                     <div class="mb-3">
-                      <input type="text" name="userid"  class="form-control" placeholder="User" aria-label="Email" aria-describedby="email-addon">
+                      <input type="text" name="userid" class="form-control" placeholder="User" aria-label="Email" aria-describedby="email-addon">
                     </div>
                     <label>Password</label>
                     <div class="mb-3">
-                      <input type="password" name="password"  class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
+                      <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="password-addon">
                     </div>
                     <!--div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
                       <label class="form-check-label" for="rememberMe">Remember me</label>
                     </div-->
-                    <?php if ($warn){ ?>
-                    <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                      <p class="mb-4 text-sm mx-auto">
+                    <?php if ($warn) { ?>
+                      <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                        <p class="mb-4 text-sm mx-auto">
                         <h4>Warning!</h4>
                         Please check username or password.
-                      </p>
-                    </div>
+                        </p>
+                      </div>
                     <?php } ?>
                     <div class="text-center">
                       <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign in</button>
@@ -109,5 +120,5 @@
       </div>
     </section>
   </main>
-  
+
   <?php include 'footer.php'; ?>

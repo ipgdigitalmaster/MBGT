@@ -4,7 +4,7 @@ include("../include/config.php");
 
 $check_module = "content";
 $tbl_name = $FTblName . "_member";
-$header_table = ['No.', 'User ID', 'Display Name', 'Emp Code', 'Emp Name', 'Email', 'Position', 'Batch', 'Status', 'Register Date'];
+$header_table = ['No.', 'User ID', 'Display Name', 'Emp Name', 'Email', 'Position', 'Batch', 'Status', 'Register Date'];
 
 $filename = "Member Register " . date("Y-m-d") . ".xlsx";
 $datas = [];
@@ -37,7 +37,7 @@ while ($rec = $query->fetch_assoc()) {
     $result['i'] = $i;
     $result['userid'] = $rec['userid'];
     $result['displayname'] = $rec['displayname'];
-    $result['emp_code'] = $rec['emp_code'];
+    //$result['emp_code'] = $rec['emp_code'];
     $result['emp_name'] = $rec['emp_name'];
     $result['member_email'] = $rec['member_email'];
     $result['member_position'] = $rec['member_position'];

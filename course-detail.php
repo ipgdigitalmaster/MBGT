@@ -1,6 +1,7 @@
 <?php include 'header.php' ?>
 
 <body class="g-sidenav-show  bg-gray-100">
+
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <div class="container-fluid py-4">
             <!-- <h1>Course Detail</h1> -->
@@ -10,8 +11,8 @@
             $PK_field = "content_id";
             $PK_status = "content_status";
             // $s = "SELECT * FROM `" . $tbl_name . "` where $PK_field = '" . $_GET['cid'] . "' order by $PK_field asc ";
-            $s = "SELECT * FROM `" . $tbl_name . "` RIGHT JOIN `mbgt_instructor` ON " . $tbl_name . ".course_instructor = mbgt_instructor.instructor_id WHERE $PK_field = '" . $_GET['cid'] . "'";
-            //echo $s;
+            $s = "SELECT * FROM `" . $tbl_name . "`  WHERE $PK_field = '" . $_GET['cid'] . "'";
+
             $q = $mysqli->query($s);
             while ($r = $q->fetch_assoc()) {
             ?>
@@ -36,8 +37,6 @@
                                 <h4 class="text-info text-center"> Course Details</h4>
                                 <?php
                                 $ss = "SELECT * FROM `" . $FTblName . "_enroll`  where course_id = '" . $_GET['cid'] . "' and userid = '" . $_GET['userid'] . "' ";
-
-
                                 $qq = $mysqli->query($ss);
                                 $result_enroll = $qq->fetch_assoc();
                                 $rr = $qq->fetch_row();
@@ -52,7 +51,16 @@
 
                         <div class="row">
                             <h6 class="fw-bold">Coach Name</h6>
-                            <p class="text-start px-4"><?= $r['instructor_name'] == '' ? $r['content_coach'] : $r['instructor_name'] ?></p>
+                            <?php
+                            foreach (json_decode($r['course_instructor']) as $key => $value) {
+
+                                $sql_instructor = "SELECT * FROM `" . $FTblName . "_instructor`  where instructor_id = '" . $value . "' ";
+                                $q_instructor = $mysqli->query($sql_instructor);
+                                $result_instructor = $q_instructor->fetch_assoc();
+
+                            ?>
+                                <p class="text-start px-4"><?php echo $result_instructor['instructor_name'] ?></p>
+                            <?php      } ?>
                         </div>
                         <div class="row">
                             <h6 class="fw-bold">Start</h6>

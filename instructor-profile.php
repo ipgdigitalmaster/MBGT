@@ -61,8 +61,7 @@ $q = $mysqli->query($s);
                             </div>
                         </div>
                     <?php }
-                $sql_class = "SELECT * FROM `mbgt_course` where content_status = '1' and course_instructor =" . $instructor_id;
-
+                $sql_class = "SELECT * FROM mbgt_course where course_instructor LIKE '%" . '"' . $instructor_id . '"' . "%' order by content_id asc ";
                 $query_class = $mysqli->query($sql_class);
                     ?>
                     <div class="col-12 mt-4">
@@ -73,17 +72,15 @@ $q = $mysqli->query($s);
                                         <h6 class="mb-0">Classes</h6>
                                     </div>
                                     <div class="col-md-3 text-end">
-                                        <select name="" id="" class="form-select">
-                                            <option value="0" disabled="disabled" selected>Filter by courses</option>
-                                            <option value="">All courses</option>
-                                            <?php
+                                        <!-- <select name="course_batch" id="course_batch" class="form-select"> -->
+                                        <select id="batchFilter" class="form-control mb-4" style="padding: 0.5rem 2rem;">
 
+                                            <?php
                                             $sql_batch = "select * from mbgt_batch where batch_status = 1 order by batch_id DESC";
                                             $q_batch = $mysqli->query($sql_batch);
                                             while ($r_batch = $q_batch->fetch_assoc()) {
-                                                echo '<option value="' . $r_batch['batch_id'] . '">' . $r_batch['batch_name'] . '</option>';
+                                                echo '<option value="' . $r_batch['batch_name'] . '">' . $r_batch['batch_name'] . '</option>';
                                             }
-
                                             ?>
                                         </select>
                                     </div>
@@ -92,53 +89,44 @@ $q = $mysqli->query($s);
 
                             <div class="card-body p-3">
                                 <div class="row">
-                                    <?php while ($result_class = $query_class->fetch_assoc()) { ?>
-                                        <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
-                                            <div class="card card-blog card-plain">
-                                                <div class="position-relative">
-                                                    <a class="d-block shadow-xl border-radius-xl">
+                                    <table class="table align-items-center mb-0" id="course-list">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Image</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Course Name</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Batch</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">View Course Detail</th>
+                                            </tr>
+                                        </thead>
 
-                                                        <img src="<?php echo $result_class['content_picture'] ?>" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
-                                                    </a>
-                                                </div>
-                                                <div class="card-body px-1 pb-0">
-                                                    <p class="text-gradient text-dark mb-2 text-sm"> <?php
-                                                                                                        $sql_batch = "select * from mbgt_batch where batch_status = 1 and batch_id = '" . $result_class['course_batch'] . "'";
+                                        <tbody>
+                                            <?php while ($result_class = $query_class->fetch_assoc()) { ?>
 
-                                                                                                        $q_batch = $mysqli->query($sql_batch);
-                                                                                                        $r_batch = $q_batch->fetch_assoc();
-                                                                                                        echo $r_batch['batch_name'] ?></p>
-                                                    <a href="javascript:;">
-                                                        <h5>
-                                                            <a href="instructor-course-detail.php?content_id=<?php echo $result_class['content_id'] ?>">
-                                                                <?php echo $result_class['content_name'] ?>
-                                                            </a>
-                                                        </h5>
-                                                    </a>
-                                                    <p class="mb-4 text-sm">
-                                                        <?php echo $result_class['content_detail'] ?>
-                                                    </p>
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <a href="instructor-course-detail.php?content_id=<?php echo $result_class['content_id'] ?>" class="btn btn-outline-primary btn-sm mb-0">View </a>
-                                                        <!-- <div class="avatar-group mt-2">
-                                                            <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                                                                <img alt="Image placeholder" src="cms/assets/img/team-1.jpg">
-                                                            </a>
-                                                            <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                                                                <img alt="Image placeholder" src="cms/assets/img/team-2.jpg">
-                                                            </a>
-                                                            <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                                                                <img alt="Image placeholder" src="cms/assets/img/team-3.jpg">
-                                                            </a>
-                                                            <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                                                                <img alt="Image placeholder" src="cms/assets/img/team-4.jpg">
-                                                            </a>
-                                                        </div> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php } ?>
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="align-middle text-center">
+                                                            <img src="<?php echo $result_class['content_picture'] ?>" class="avatar avatar-sm me-3">
+                                                        </div>
+                                                    </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <?php echo $result_class['content_name'] ?> </td>
+                                                    <td class="align-middle text-center text-sm">
+                                                        <?php
+                                                        $sql_batch = "select * from mbgt_batch where batch_id = " . $result_class['course_batch'];
+                                                        $q_batch = $mysqli->query($sql_batch);
+                                                        $r_batch = $q_batch->fetch_assoc();
+                                                        echo $r_batch['batch_name'];
+                                                        ?>
+                                                    </td>
+                                                    <td class="text-center"> <a href="instructor-course-detail.php?content_id=<?php echo $result_class['content_id'] ?>">View</a></td>
+                                                </tr>
+
+
+                                            <?php } ?>
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -149,3 +137,51 @@ $q = $mysqli->query($s);
     </main>
 
     <?php include 'footer.php'; ?>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $("document").ready(function() {
+
+            $("#course-list").dataTable({
+                "dom": 'Bfrtip',
+                "order": [
+                    [0, 'desc']
+                ],
+                "searching": true,
+            });
+            $('#course-list_filter > label').hide();
+
+            //Get a reference to the new datatable
+            var table = $('#course-list').DataTable();
+
+            $("#course-list_filter.dataTables_filter").append($("#batchFilter"));
+
+            var categoryIndex = 0;
+            $("#course-list th").each(function(i) {
+                if ($($(this)).html() == "Batch") {
+                    categoryIndex = i;
+                    return false;
+                }
+            });
+
+
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var selectedItem = $('#batchFilter').val()
+                    var category = data[categoryIndex];
+                    if (selectedItem === "" || category.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#batchFilter").change(function(e) {
+                table.draw();
+            });
+
+            table.draw();
+        });
+    </script>
