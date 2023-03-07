@@ -60,7 +60,7 @@ $tbl_name = $FTblName . "_enroll";
                         <td class="align-middle text-center text-sm">
                           <?php
                           if ($r['pass_status'] == 1) {
-                            echo '<a href="#">Certification</a>';
+                            echo '<a href="' . $r['certification_path'] . '" target="_blank">Certification</a>';
                           } else {
                             echo '-';
                           }

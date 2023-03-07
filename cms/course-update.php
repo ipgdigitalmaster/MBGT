@@ -13,8 +13,47 @@ if (isset($_POST['mode'])) {
         include "../include/m_add.php";
     }
     if ($_POST['mode'] == "update") {
+
+        if ($_POST['assign_member'] != 'null') {
+            $d = "select * from `" . $FTblName . "_course` where content_id = '" . trim($_POST[$PK_field]) . "' ";
+
+            $result = $mysqli->query($d);
+            $rec = $result->fetch_assoc();
+            echo '<pre>';
+            print_r($_POST['assign_member']);
+            print_r(json_decode($rec['assign_member']));
+            $dif = array_diff($_POST['assign_member'], json_decode($rec['assign_member']));
+            $dif1 = array_diff(json_decode($rec['assign_member']), $_POST['assign_member']);
+            echo '<pre>';
+            print_r($dif); // if have dif >> insert
+            print_r($dif1); // if have dif1 >> delete
+            $diff_member = [];
+
+            exit;
+            if ($dif) {
+
+                foreach ($dif as $value) {
+                    array_push($diff_member, $value);
+                }
+
+                $imploded_arr = implode(',', $diff_member);
+                //get user id 
+                $user_query = "select * from " . $FTblName . "_member where member_id in ( " . $imploded_arr . " )";
+                echo $user_query;
+                exit;
+                $result_user = $mysqli->query($user_query);
+                $userID = [];
+                while ($rec_user = $result_user->fetch_assoc()) {
+                    array_push($userID, $rec_user['userid']);
+                    $s = "insert into `" . $FTblName . "_enroll` (userid,course_id,enroll_date) values ('" . $rec_user['userid'] . "','" . $rec['content_id'] . "',NOW()) ";
+                    $mysqli->query($s);
+                }
+            }
+        }
+
         $_POST['assign_member'] = json_encode($_POST['assign_member']);
         $_POST['course_instructor'] = json_encode($_POST['course_instructor']);
+
 
         $sql = "select * from $tbl_name where $PK_field = '" . trim($_POST[$PK_field]) . "'";
         $q = $mysqli->query($sql);
