@@ -14,7 +14,7 @@ if (isset($_POST['mode'])) {
     }
     if ($_POST['mode'] == "update") {
 
-        if ($_POST['assign_member'] != 'null') {
+        if ($_POST['assign_member']) {
             $d = "select * from `" . $FTblName . "_course` where content_id = '" . trim($_POST[$PK_field]) . "' ";
 
             $result = $mysqli->query($d);
@@ -25,11 +25,12 @@ if (isset($_POST['mode'])) {
             $dif = array_diff($_POST['assign_member'], json_decode($rec['assign_member']));
             $dif1 = array_diff(json_decode($rec['assign_member']), $_POST['assign_member']);
             echo '<pre>';
+            echo 'dif--------';
             print_r($dif); // if have dif >> insert
+            echo 'dif1--------';
             print_r($dif1); // if have dif1 >> delete
             $diff_member = [];
 
-            exit;
             if ($dif) {
 
                 foreach ($dif as $value) {
@@ -39,8 +40,8 @@ if (isset($_POST['mode'])) {
                 $imploded_arr = implode(',', $diff_member);
                 //get user id 
                 $user_query = "select * from " . $FTblName . "_member where member_id in ( " . $imploded_arr . " )";
-                echo $user_query;
-                exit;
+                echo 'dif: sql : ' . $user_query;
+
                 $result_user = $mysqli->query($user_query);
                 $userID = [];
                 while ($rec_user = $result_user->fetch_assoc()) {
@@ -49,6 +50,29 @@ if (isset($_POST['mode'])) {
                     $mysqli->query($s);
                 }
             }
+            if ($dif1) {
+
+                foreach ($dif1 as $value) {
+                    array_push($diff_member, $value);
+                }
+
+                $imploded_arr = implode(',', $diff_member);
+                //get user id 
+                $user_query = "select * from " . $FTblName . "_member where member_id in ( " . $imploded_arr . " )";
+                echo 'dif1: sql : ' . $user_query;
+
+                $result_user = $mysqli->query($user_query);
+                $userID = [];
+                while ($rec_user = $result_user->fetch_assoc()) {
+                    array_push($userID, $rec_user['userid']);
+                    $s = "DELETE FROM `" . $FTblName . "_enroll` WHERE userid = '" . $rec_user['userid'] . "' and course_id = '" . $rec['content_id'] . "' ";
+                    $mysqli->query($s);
+                }
+            }
+        } else {
+            $s = "DELETE FROM `" . $FTblName . "_enroll` WHERE course_id = '" . $_POST[$PK_field] . "' ";
+
+            $mysqli->query($s);
         }
 
         $_POST['assign_member'] = json_encode($_POST['assign_member']);
